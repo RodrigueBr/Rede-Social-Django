@@ -51,8 +51,20 @@ class Comentario(models.Model):
 
 class Report(models.Model):
     usuario_reportado = models.ForeignKey(Usuario, related_name='Reports', on_delete=models.CASCADE)
-    Report_motivo = models.TextField()
+    Report_motivo = models.TextField(max_length=100, default='')
     Report_criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'Report de {self.usuario_reportado}'
+
+class Perfil(models.Model):
+    perfil_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    perfil_biografia = models.TextField(max_length=150, default='')
+    perfil_interesses = models.CharField(max_length=50, default='')
+
+    def __str__(self):
+        return f'Pefil de {self.perfil_usuario}'
+
+    class Meta:
+        verbose_name = 'Perfil'
+        verbose_name_plural = 'Perfis'
