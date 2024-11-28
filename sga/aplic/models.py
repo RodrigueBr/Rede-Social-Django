@@ -1,29 +1,29 @@
-from django.db import models
 import os
+from django.db import models
 
-# Create your models here.
 
-class Postagem(models.Model):
-    post_titulo = models.CharField(primary_key=True, max_length=100)
-    post_descricao = models.TextField(max_length=180)
-    post_imagem = models.ImageField(upload_to='images/', blank=True, null=True)
+class Posts(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(max_length=180)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
     create_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        if self.post_imagem:
-            nome_imagem, extensao = os.path.splitext(self.post_imagem.name)
-            self.post_imagem.name = f'{self.post_titulo.replace(" ", "_")}{extensao}'
+        if self.image:
+            nome_imagem, extensao = os.path.splitext(self.image.name)
+            self.image.name = f'{self.title.replace(" ", "_")}{extensao}'
+
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.post_titulo
+        return self.title
 
     class Meta:
         verbose_name = 'Postagem'
         verbose_name_plural = 'Postagens'
 
 class Usuario(models.Model):
-    usuario_username = models.CharField(primary_key=True, max_length=15, default='')
+    usuario_username = models.CharField(max_length=15, default='')
     usuario_nome = models.CharField(max_length=20, default='')
     usuario_sobrenome = models.EmailField(max_length=20, default='')
     usuario_senha = models.CharField(max_length=30, default='')
@@ -37,7 +37,7 @@ class Usuario(models.Model):
         verbose_name_plural = 'Cadastro de Usuários'
 
 class Comentario(models.Model):
-    postagem = models.ForeignKey(Postagem, related_name='comentarios', on_delete=models.CASCADE)
+    posts = models.ForeignKey(Posts, related_name='comentarios', on_delete=models.CASCADE)
     autor = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     comentario_conteudo = models.TextField()
     comentario_data_criacao = models.DateTimeField(auto_now_add=True)
@@ -61,6 +61,7 @@ class Perfil(models.Model):
     perfil_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     perfil_biografia = models.TextField(max_length=150, default='')
     perfil_interesses = models.CharField(max_length=50, default='')
+    perfil_image = models.ImageField(upload_to='images/', blank=True, null=True)
 
     def __str__(self):
         return f'Pefil de {self.perfil_usuario}'
