@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}Postagens{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -74,6 +79,11 @@
             color: #777;
         }
 
+        .author {
+            font-size: 0.85em;
+            color: #888;
+            margin-top: 10px;
+        }
 
         a {
             display: inline-block;
@@ -91,12 +101,12 @@
             background-color: #155ab8;
         }
 
-
         .center-container {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
+        }
 
     </style>
 </head>
@@ -105,7 +115,11 @@
     <h1>Postagens</h1>
 
     <div class="center-container">
+        {% if user.is_authenticated %}
         <a href="{% url 'criar_post' %}">Criar Novo Post</a>
+        {% else %}
+        <p>Você precisa estar <a href="{% url 'login' %}">logado</a> para criar postagens.</p>
+        {% endif %}
     </div>
 
     <ul>
@@ -117,6 +131,7 @@
                     <img src="{{ post.image.url }}" alt="{{ post.title }}">
                 {% endif %}
                 <p>Criado em: {{ post.create_at }}</p>
+                <p class="author">Postado por: {{ post.user.username }}</p>
             </li>
         {% empty %}
             <p>Nenhuma postagem ainda.</p>
@@ -125,3 +140,4 @@
 
 </body>
 </html>
+{% endblock %}
