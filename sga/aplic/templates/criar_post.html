@@ -9,48 +9,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Post</title>
+
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fb;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+            margin-bottom: 20px;
         }
 
         .message-container {
+            background-color: #fddcdb;
+            color: #e74c3c;
+            border-radius: 8px;
+            padding: 15px;
             text-align: center;
-            padding: 20px;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            border-radius: 5px;
-            width: 300px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
         .message-container a {
-            color: #155724;
-            text-decoration: none;
+            color: #e74c3c;
+            text-decoration: underline;
             font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .form-container {
-            text-align: center;
         }
 
         .form-container form {
-            display: inline-block;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        .form-container input[type="file"] {
+            border: none;
+            background-color: transparent;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .submit-button {
+            padding: 10px 18px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #357ab7;
+        }
+
+        .view-post-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .view-posts {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .view-posts:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            .submit-button {
+                font-size: 14px;
+            }
+
+            .form-container textarea {
+                height: 100px;
+            }
         }
     </style>
+
 </head>
 <body>
 
@@ -61,19 +136,22 @@
     </div>
     {% else %}
 
-    <h1>Criar Nova Postagem</h1>
-    <div class="form-container">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Enviar Post</button>
-        </form>
+    <div class="page-container">
+        <h1>Criar Nova Postagem</h1>
+
+        <div class="form-container">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="submit-button">Enviar Post</button>
+            </form>
+        </div>
+
+        <div class="view-post-link">
+            <a href="{% url 'listar_posts' %}" class="view-posts">Ver Postagens</a>
+        </div>
     </div>
 
-    <br>
-    <div style="text-align: center;">
-        <a href="{% url 'listar_posts' %}">Ver Postagens</a>
-    </div>
     {% endif %}
 
 </body>

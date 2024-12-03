@@ -1,31 +1,57 @@
+{% load bootstrap5 %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}l{% endblock %}</title>
+    <title>{% block title %}Home{% endblock %}</title>
+
+    {% bootstrap_css %}
 
     <style>
-        .header {
-            position: absolute;
-            top: 20px;
+        body {
+            padding-top: 60px;
+        }
+
+        .login {
+            position: fixed;
+            top: 70px;
             right: 20px;
             font-size: 1.2em;
             font-weight: bold;
+            z-index: 1050;
         }
 
-        .header a {
+        .login a {
             color: #1a73e8;
             text-decoration: none;
         }
 
+        .ghost-icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
+    {% load static %}
+
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+
+    <div class="login">
         {% if user.is_authenticated %}
-            Olá, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a>
+            Olá, {{ user.username }}!
+            <a href="{% url 'logout' %}">Sair</a>
+
+            <a href="{% url 'profile' user.username %}">
+                <img src="{% static 'images/ghost_icon.png' %}" alt="Perfil" class="ghost-icon">
+            </a>
         {% else %}
             <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Registrar</a>
         {% endif %}
@@ -36,5 +62,7 @@
         {% endblock %}
     </div>
 
+
+    {% bootstrap_javascript %}
 </body>
 </html>

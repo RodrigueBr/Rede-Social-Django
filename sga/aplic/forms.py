@@ -1,5 +1,5 @@
 from django import forms
-from .models import Posts
+from .models import Posts, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -34,3 +34,8 @@ class UserRegistrationForm(forms.ModelForm):
 
 class UserLoginForm(AuthenticationForm):
     pass
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['full_name', 'bio', 'avatar', 'birth_date', 'location']
